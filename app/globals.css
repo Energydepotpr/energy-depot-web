@@ -537,10 +537,11 @@ img { max-width: 100%; display: block; }
 .ed-proj-gallery {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 220px;
   gap: 8px;
 }
 .ed-proj-gallery-item {
-  position: relative; aspect-ratio: 1; overflow: hidden;
+  position: relative; overflow: hidden;
   border-radius: 8px; cursor: pointer; background: var(--surface);
 }
 .ed-proj-gallery-item:hover .ed-proj-gallery-overlay { opacity: 1; }
@@ -567,10 +568,10 @@ img { max-width: 100%; display: block; }
 }
 .ed-lightbox-close:hover { opacity: 1; }
 @media (max-width: 960px) {
-  .ed-proj-gallery { grid-template-columns: repeat(3, 1fr); }
+  .ed-proj-gallery { grid-template-columns: repeat(3, 1fr); grid-auto-rows: 180px; }
 }
 @media (max-width: 640px) {
-  .ed-proj-gallery { grid-template-columns: repeat(2, 1fr); gap: 4px; }
+  .ed-proj-gallery { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 140px; gap: 4px; }
 }
 
 /* ============== MOBILE NAV ============== */
