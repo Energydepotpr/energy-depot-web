@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 
@@ -37,6 +37,8 @@ const SLIDES = [
 export default function Hero() {
   const [slide, setSlide] = useState(0)
   const [paused, setPaused] = useState(false)
+  const [videoSrc, setVideoSrc] = useState('')
+  const videoRef = useRef<HTMLVideoElement>(null)
   const S = SLIDES[slide]
 
   useEffect(() => {
@@ -45,6 +47,17 @@ export default function Hero() {
     return () => clearInterval(id)
   }, [paused])
 
+  // Carga el video solo cuando el navegador está idle (no bloquea LCP)
+  useEffect(() => {
+    const load = () => setVideoSrc('/hero-bg.mp4')
+    if ('requestIdleCallback' in window) {
+      const id = (window as Window & typeof globalThis).requestIdleCallback(load)
+      return () => (window as Window & typeof globalThis).cancelIdleCallback(id)
+    }
+    const t = setTimeout(load, 1500)
+    return () => clearTimeout(t)
+  }, [])
+
   return (
     <section
       className="ed-hero"
@@ -52,7 +65,14 @@ export default function Hero() {
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      {/* CSS-only background — sin video, sin assets extra */}
+      {videoSrc && (
+        <video
+          ref={videoRef}
+          autoPlay muted loop playsInline
+          src={videoSrc}
+          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0, opacity: 0.35 }}
+        />
+      )}
       <div className="ed-hero-video-overlay" />
       <div className="ed-hero-grid" />
       <div className="ed-hero-aurora" key={`aurora-${slide}`} />
