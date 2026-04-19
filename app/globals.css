@@ -533,6 +533,46 @@ img { max-width: 100%; display: block; }
   .ed-nosotros-grid { grid-template-columns: 1fr; }
 }
 
+/* ============== PROJECT GALLERY ============== */
+.ed-proj-gallery {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+.ed-proj-gallery-item {
+  position: relative; aspect-ratio: 1; overflow: hidden;
+  border-radius: 8px; cursor: pointer; background: var(--surface);
+}
+.ed-proj-gallery-item:hover .ed-proj-gallery-overlay { opacity: 1; }
+.ed-proj-gallery-overlay {
+  position: absolute; inset: 0;
+  background: rgba(31,95,255,.5);
+  display: grid; place-items: center;
+  opacity: 0; transition: opacity .2s;
+}
+.ed-lightbox {
+  position: fixed; inset: 0; z-index: 1000;
+  background: rgba(0,0,0,.92); backdrop-filter: blur(12px);
+  display: flex; align-items: center; justify-content: center;
+  cursor: zoom-out;
+}
+.ed-lightbox-img {
+  position: relative; width: min(90vw, 900px); height: min(85vh, 800px);
+  cursor: default;
+}
+.ed-lightbox-close {
+  position: absolute; top: 20px; right: 24px; z-index: 10;
+  color: #fff; font-size: 24px; background: none; cursor: pointer;
+  opacity: .7; transition: opacity .15s; line-height: 1;
+}
+.ed-lightbox-close:hover { opacity: 1; }
+@media (max-width: 960px) {
+  .ed-proj-gallery { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 640px) {
+  .ed-proj-gallery { grid-template-columns: repeat(2, 1fr); gap: 4px; }
+}
+
 /* ============== MOBILE NAV ============== */
 .ed-mobile-nav {
   display: none;

@@ -41,7 +41,7 @@ export default function Hero() {
     return () => clearInterval(id)
   }, [paused])
 
-  useEffect(() => { setVideoSrc('/hero-bg.mp4') }, [])
+  useEffect(() => { setVideoSrc('/hero-bg-wp.mp4') }, [])
 
   return (
     <section
