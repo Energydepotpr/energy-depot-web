@@ -1,26 +1,21 @@
-import type { Metadata } from 'next'
+'use client'
 
-export const metadata: Metadata = {
-  title: 'Contacto — Energy Depot PR',
-  description: 'Comunícate con Energy Depot PR. Estamos en San Juan, Puerto Rico.',
-}
+import { useLanguage } from '@/context/LanguageContext'
 
 export default function ContactoPage() {
+  const { t } = useLanguage()
+  const p = t.contacto
+
   return (
     <section className="ed-contact">
       <div className="ed-container">
         <div className="ed-contact-grid">
           <div>
-            <div className="ed-section-label">Contacto</div>
-            <h1>Estamos aquí<br />para <em style={{ fontStyle: 'italic', color: 'var(--ink-3)' }}>ayudarte</em>.</h1>
+            <div className="ed-section-label">{p.label}</div>
+            <h1>{p.heading}<br /><em style={{ fontStyle: 'italic', color: 'var(--ink-3)' }}>{p.headingEm}</em>.</h1>
 
             <div className="ed-contact-info">
-              {[
-                { icon: 'phone', title: 'Teléfono', main: '(787) 555-0120', sub: 'Lun — Sáb · 8am — 6pm' },
-                { icon: 'mail', title: 'Email', main: 'info@energydepotpr.com', sub: 'Respuesta en menos de 4 horas' },
-                { icon: 'pin', title: 'Ubicación', main: 'San Juan, Puerto Rico', sub: 'Servicio a toda la isla' },
-                { icon: 'clock', title: 'Horario', main: 'Lun — Sáb, 8am — 6pm', sub: 'Soporte técnico 24/7' },
-              ].map(item => (
+              {p.info.map(item => (
                 <div key={item.title} className="ed-contact-item">
                   <div className="ed-contact-item-icon">
                     <svg viewBox="0 0 24 24" fill="none" width="20" height="20">
@@ -51,22 +46,22 @@ export default function ContactoPage() {
             <div className="ed-quote-card" style={{ marginTop: 80 }}>
               <div className="ed-quote-body">
                 <div className="ed-quote-head">
-                  <h2>Escríbenos</h2>
+                  <h2>{p.formTitle}</h2>
                 </div>
                 <div className="ed-field">
-                  <label>Nombre</label>
-                  <input className="ed-input" placeholder="Tu nombre" />
+                  <label>{p.name}</label>
+                  <input className="ed-input" placeholder={p.namePh} />
                 </div>
                 <div className="ed-field">
-                  <label>Email o teléfono</label>
-                  <input className="ed-input" placeholder="Cómo contactarte" />
+                  <label>{p.contact}</label>
+                  <input className="ed-input" placeholder={p.contactPh} />
                 </div>
                 <div className="ed-field">
-                  <label>Mensaje</label>
-                  <textarea className="ed-textarea" rows={5} placeholder="¿En qué podemos ayudarte?" />
+                  <label>{p.message}</label>
+                  <textarea className="ed-textarea" rows={5} placeholder={p.messagePh} />
                 </div>
                 <button className="ed-btn ed-btn-brand" style={{ width: '100%', justifyContent: 'center' }}>
-                  Enviar mensaje
+                  {p.send}
                 </button>
               </div>
             </div>

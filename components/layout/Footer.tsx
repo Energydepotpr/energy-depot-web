@@ -1,6 +1,14 @@
+'use client'
+
 import Link from 'next/link'
+import { useLanguage } from '@/context/LanguageContext'
 
 export default function Footer() {
+  const { t, lang } = useLanguage()
+  const f = t.footer
+  const n = t.nav
+  const en = lang === 'en'
+
   return (
     <footer className="ed-footer">
       <div className="ed-container">
@@ -17,7 +25,7 @@ export default function Footer() {
                 <small>We Are The Difference</small>
               </span>
             </Link>
-            <p>Distribuidor autorizado en Puerto Rico de soluciones de energía solar, almacenamiento, generadores y equipos portátiles. Desde 2017.</p>
+            <p>{f.tagline}</p>
             <div className="social">
               <a href="https://facebook.com" target="_blank" rel="noopener" title="Facebook">
                 <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14">
@@ -40,34 +48,36 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4>Tienda</h4>
-            <Link href="/tienda?cat=portatiles">Estaciones Portátiles</Link>
-            <Link href="/tienda?cat=ess">Sistemas ESS</Link>
-            <Link href="/tienda?cat=generadores">Generadores</Link>
-            <Link href="/tienda?cat=solar">Placas Solares</Link>
+            <h4>{f.shopTitle}</h4>
+            <Link href="/tienda?cat=portatiles">{en ? 'Power Stations' : 'Estaciones Portátiles'}</Link>
+            <Link href="/tienda?cat=ess">{en ? 'ESS Systems' : 'Sistemas ESS'}</Link>
+            <Link href="/tienda?cat=generadores">{en ? 'Generators' : 'Generadores'}</Link>
+            <Link href="/tienda?cat=solar">{en ? 'Solar Panels' : 'Placas Solares'}</Link>
           </div>
 
           <div>
-            <h4>Compañía</h4>
-            <Link href="/nosotros">Sobre Nosotros</Link>
-            <Link href="/proyectos">Proyectos</Link>
-            <Link href="/cotizacion">Cotización</Link>
-            <Link href="/contacto">Contacto</Link>
+            <h4>{f.companyTitle}</h4>
+            <Link href="/nosotros">{n.nosotros}</Link>
+            <Link href="/proyectos">{n.proyectos}</Link>
+            <Link href="/cotizacion">{n.cotizacion}</Link>
+            <Link href="/contacto">{n.contacto}</Link>
           </div>
 
           <div>
-            <h4>Contacto</h4>
+            <h4>{f.contactTitle}</h4>
             <a href="tel:+17875550120">(787) 555-0120</a>
             <a href="mailto:info@energydepotpr.com">info@energydepotpr.com</a>
             <span style={{ display: 'block', padding: '6px 0', fontSize: 14 }}>San Juan · Puerto Rico</span>
-            <span style={{ display: 'block', padding: '6px 0', fontSize: 14, color: '#8a94a8' }}>Lun — Sáb · 8am — 6pm</span>
+            <span style={{ display: 'block', padding: '6px 0', fontSize: 14, color: '#8a94a8' }}>
+              {en ? 'Mon — Sat · 8am — 6pm' : 'Lun — Sáb · 8am — 6pm'}
+            </span>
           </div>
         </div>
 
         <div className="ed-footer-bottom">
-          <span>© 2017—2026 ENERGY DEPOT LLC · Todos los derechos reservados</span>
+          <span>{f.rights}</span>
           <span>
-            <Link href="/contacto">Contacto</Link> · <Link href="/cotizacion">Cotización</Link>
+            <Link href="/contacto">{n.contacto}</Link> · <Link href="/cotizacion">{n.cotizacion}</Link>
           </span>
         </div>
       </div>

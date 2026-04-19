@@ -1,54 +1,111 @@
-import type { Metadata } from 'next'
+'use client'
 
-export const metadata: Metadata = {
-  title: 'Proyectos — Energy Depot PR',
-  description: 'Instalaciones residenciales y comerciales de energía solar en Puerto Rico.',
-}
+import { useState } from 'react'
+import { useLanguage } from '@/context/LanguageContext'
 
-const PROJECTS = [
-  { title: 'Residencial — Guaynabo', sys: '15kW Solar + 20kWh ESS SolaX', year: '2024', area: 'Residencial', bg: 'p1', desc: 'Sistema completo de almacenamiento para hogar de 4 habitaciones. Autonomía de 24+ horas sin AEE.' },
-  { title: 'Comercial — Caguas', sys: '45kW Solar + Generador Briggs 20kW', year: '2024', area: 'Comercial', bg: 'p2', desc: 'Solución híbrida solar-generador para local comercial de 2,400 pies cuadrados.' },
-  { title: 'Farmacia 24/7 — Bayamón', sys: 'ESS SolaX 10kWh + UPS continuo', year: '2023', area: 'Comercial', bg: 'p3', desc: 'Farmacia que no puede perder energía. Sistema UPS + ESS garantiza operación ininterrumpida.' },
-  { title: 'Residencial — Dorado', sys: '10kW Solar + ESS 10.24kWh', year: '2023', area: 'Residencial', bg: 'p4', desc: 'Casa en urbanización de Dorado. Factura eléctrica reducida en 87%.' },
-  { title: 'Oficina médica — Ponce', sys: 'Generador Briggs 12kW + ATS 200A', year: '2023', area: 'Comercial', bg: 'p5', desc: 'Consultorio médico con encendido automático en menos de 10 segundos ante cualquier apagón.' },
-  { title: 'Residencial — Carolina', sys: 'Pecron E3600 + Placas Bluesun 550W ×4', year: '2024', area: 'Residencial', bg: 'p1', desc: 'Sistema portátil de respaldo con recarga solar. Ideal para zonas con apagones frecuentes.' },
+const PHOTO_GRADIENTS = [
+  'linear-gradient(135deg, #0f2a5e 0%, #1f5fff 60%, #22c55e 100%)',
+  'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)',
+  'linear-gradient(135deg, #1f2d3d 0%, #2d5a27 60%, #22c55e 100%)',
+  'linear-gradient(135deg, #0f2a5e 0%, #1e40af 50%, #3b82f6 100%)',
+  'linear-gradient(135deg, #1a0a00 0%, #7c2d12 50%, #f59e0b 100%)',
+  'linear-gradient(135deg, #0f1f3d 0%, #1f5fff 40%, #60a5fa 100%)',
 ]
 
+function SolarIcon() {
+  return (
+    <svg viewBox="0 0 64 64" fill="none" width="64" height="64" style={{ opacity: 0.25 }}>
+      <rect x="4" y="4" width="56" height="56" rx="4" stroke="white" strokeWidth="2" />
+      <line x1="4" y1="22" x2="60" y2="22" stroke="white" strokeWidth="1.5" />
+      <line x1="4" y1="40" x2="60" y2="40" stroke="white" strokeWidth="1.5" />
+      <line x1="22" y1="4" x2="22" y2="60" stroke="white" strokeWidth="1.5" />
+      <line x1="40" y1="4" x2="40" y2="60" stroke="white" strokeWidth="1.5" />
+      <circle cx="32" cy="32" r="6" stroke="white" strokeWidth="2" />
+      <line x1="32" y1="2" x2="32" y2="10" stroke="white" strokeWidth="2" strokeLinecap="round" />
+      <line x1="32" y1="54" x2="32" y2="62" stroke="white" strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  )
+}
+
 export default function ProyectosPage() {
+  const { t } = useLanguage()
+  const p = t.proyectos
+  const [active, setActive] = useState<string>(p.filters[0])
+
+  const allFilter = p.filters[0]
+  const filtered = active === allFilter
+    ? p.items
+    : p.items.filter(item => item.area === p.filters[1] ? active === p.filters[1] : active === p.filters[2])
+
   return (
     <section className="ed-proj-page">
       <div className="ed-container">
         <div className="ed-proj-hero">
-          <div className="ed-section-label">Proyectos</div>
-          <h1>Instalaciones <em>reales</em>.</h1>
+          <div className="ed-section-label">{p.label}</div>
+          <h1>{p.heading} <em>{p.headingEm}</em>.</h1>
           <p style={{ fontSize: 18, color: 'var(--ink-3)', maxWidth: 600, lineHeight: 1.55 }}>
-            Más de 500 hogares y negocios en Puerto Rico confían en Energy Depot para su resiliencia energética.
+            {p.sub}
           </p>
         </div>
 
         <div className="ed-proj-filter">
-          {['Todos', 'Residencial', 'Comercial'].map(f => (
-            <button key={f} className={`ed-filter${f === 'Todos' ? ' active' : ''}`}>{f}</button>
+          {p.filters.map(f => (
+            <button key={f} className={`ed-filter${active === f ? ' active' : ''}`} onClick={() => setActive(f)}>{f}</button>
           ))}
         </div>
 
         <div className="ed-proj-list">
-          {PROJECTS.map((p, i) => (
+          {filtered.map((proj, i) => (
             <div key={i} className="ed-proj-card">
-              <div className={`ed-proj-card-media ed-project-bg ${p.bg}`} style={{ height: 220 }}>
-                <div className="ed-project-content" style={{ padding: 20 }}>
-                  <span className="ed-project-tag">{p.area}</span>
-                  <div />
-                </div>
+              <div
+                style={{
+                  height: 220,
+                  background: PHOTO_GRADIENTS[i % PHOTO_GRADIENTS.length],
+                  borderRadius: '12px 12px 0 0',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: 12,
+                  position: 'relative',
+                  overflow: 'hidden',
+                }}
+              >
+                <SolarIcon />
+                <span style={{
+                  fontFamily: 'var(--f-mono)',
+                  fontSize: 10,
+                  letterSpacing: '.12em',
+                  textTransform: 'uppercase',
+                  color: 'rgba(255,255,255,.45)',
+                }}>
+                  {p.photoSoon}
+                </span>
+                <span style={{
+                  position: 'absolute',
+                  top: 14,
+                  left: 14,
+                  background: 'rgba(0,0,0,.45)',
+                  color: '#fff',
+                  fontFamily: 'var(--f-mono)',
+                  fontSize: 10,
+                  letterSpacing: '.1em',
+                  textTransform: 'uppercase',
+                  padding: '4px 10px',
+                  borderRadius: 999,
+                  backdropFilter: 'blur(8px)',
+                }}>
+                  {proj.area}
+                </span>
               </div>
               <div className="ed-proj-card-body">
                 <div className="meta">
-                  <span>{p.area}</span>
-                  <span>{p.year}</span>
+                  <span>{proj.area}</span>
+                  <span>{proj.year}</span>
                 </div>
-                <h3>{p.title}</h3>
-                <p style={{ fontSize: 13, color: 'var(--brand)', fontFamily: 'var(--f-mono)', marginBottom: 8 }}>{p.sys}</p>
-                <p>{p.desc}</p>
+                <h3>{proj.title}</h3>
+                <p style={{ fontSize: 13, color: 'var(--brand)', fontFamily: 'var(--f-mono)', marginBottom: 8 }}>{proj.sys}</p>
+                <p>{proj.desc}</p>
               </div>
             </div>
           ))}

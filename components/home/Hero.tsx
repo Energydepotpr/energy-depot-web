@@ -3,33 +3,25 @@
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { useLanguage } from '@/context/LanguageContext'
 
-const SLIDES = [
+const SLIDE_DATA = [
   {
-    kicker: 'Estaciones portátiles',
-    h1: ['Energía', 'confiable', 'cuando', 'todo se apaga'],
-    copy: 'Pecron, UGreen y Growatt LFP. Enchufa y olvídate del apagón — recargarás con solar, AC o carro.',
     img: '/prod/pecron-e3600.png',
-    product: { label: 'Destacado', title: 'Pecron E3600LFP · 3,600W', price: '$3,599' },
-    telemetry: [['Batería', '87%', ''], ['Carga solar', '+2.4 kW', 'green'], ['Consumo', '1.1 kW', ''], ['Estado', 'Activo', 'pulse']],
+    product: { label: 'Destacado / Featured', title: 'Pecron E3600LFP · 3,600W', price: '$3,599' },
+    telemetry: [['Batería / Battery', '87%', ''], ['Solar / Solar in', '+2.4 kW', 'green'], ['Consumo / Load', '1.1 kW', ''], ['Estado / Status', 'Activo', 'pulse']],
     accent: '#4175FC',
   },
   {
-    kicker: 'Baterías residenciales',
-    h1: ['Respaldo', 'continuo', 'para tu', 'hogar'],
-    copy: 'SolaX ESS 10–20 kWh. Se integra con tu panel eléctrico en 1 día — sin obras pesadas.',
     img: '/prod/solax-ess10.png',
     product: { label: 'Premium', title: 'SolaX ESS 10.24 kWh', price: '$11,499' },
-    telemetry: [['Capacidad', '10.24 kWh', ''], ['Ciclos', '>6,000', 'green'], ['Respaldo', '~18 hrs', ''], ['Estado', 'Online', 'pulse']],
+    telemetry: [['Capacidad / Cap', '10.24 kWh', ''], ['Ciclos / Cycles', '>6,000', 'green'], ['Respaldo / Backup', '~18 hrs', ''], ['Estado / Status', 'Online', 'pulse']],
     accent: '#22C55E',
   },
   {
-    kicker: 'Generadores Standby',
-    h1: ['Autoarranque', 'en segundos', 'si se va', 'la luz'],
-    copy: 'Briggs & Stratton 12kW y 20kW con ATS. Funciona con propano o gas natural — instalación llave en mano.',
     img: '/prod/briggs-20kw.png',
-    product: { label: 'Instalación incluida', title: 'Briggs 20kW Standby', price: '$9,500' },
-    telemetry: [['Potencia', '20 kW', ''], ['Arranque', '<10 s', 'green'], ['Combustible', 'Propano/GN', ''], ['Estado', 'Standby', 'pulse']],
+    product: { label: 'Instalación / Turnkey', title: 'Briggs 20kW Standby', price: '$9,500' },
+    telemetry: [['Potencia / Power', '20 kW', ''], ['Arranque / Start', '<10 s', 'green'], ['Combustible / Fuel', 'LP/GN', ''], ['Estado / Status', 'Standby', 'pulse']],
     accent: '#F59E0B',
   },
 ]
@@ -39,11 +31,13 @@ export default function Hero() {
   const [paused, setPaused] = useState(false)
   const [videoSrc, setVideoSrc] = useState('')
   const videoRef = useRef<HTMLVideoElement>(null)
-  const S = SLIDES[slide]
+  const { t } = useLanguage()
+  const S = SLIDE_DATA[slide]
+  const hs = t.hero.slides[slide]
 
   useEffect(() => {
     if (paused) return
-    const id = setInterval(() => setSlide(s => (s + 1) % SLIDES.length), 6000)
+    const id = setInterval(() => setSlide(s => (s + 1) % SLIDE_DATA.length), 6000)
     return () => clearInterval(id)
   }, [paused])
 
@@ -72,28 +66,31 @@ export default function Hero() {
         <div className="ed-hero-copy" key={`copy-${slide}`}>
           <div className="ed-hero-kicker">
             <span className="tag" style={{ background: S.accent }}>PR</span>
-            {S.kicker} · Puerto Rico
+            {hs.kicker} · Puerto Rico
           </div>
           <h1>
-            {S.h1[0]} <em>{S.h1[1]}</em><br />
-            {S.h1[2]} <span className="outline">{S.h1[3]}</span>.
+            {hs.h1[0]} <em>{hs.h1[1]}</em><br />
+            {hs.h1[2]} <span className="outline">{hs.h1[3]}</span>.
           </h1>
-          <p>{S.copy}</p>
+          <p>{hs.copy}</p>
           <div className="ed-hero-ctas">
             <Link href="/cotizacion" className="ed-btn ed-btn-white ed-btn-lg">
-              Solicitar cotización
+              {t.hero.ctas.quote}
               <svg viewBox="0 0 24 24" fill="none" width="14" height="14">
                 <path d="M5 12h14m-6-6l6 6-6 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </Link>
             <Link href="/tienda" className="ed-btn ed-btn-lg" style={{ background: 'rgba(255,255,255,.08)', color: '#fff', border: '1px solid rgba(255,255,255,.14)' }}>
-              Explorar tienda
+              {t.hero.ctas.shop}
             </Link>
           </div>
           <div className="ed-hero-stats">
-            <div className="ed-hero-stat"><div className="num">9+</div><div className="label">Años en PR</div></div>
-            <div className="ed-hero-stat"><div className="num">500+</div><div className="label">Instalaciones</div></div>
-            <div className="ed-hero-stat"><div className="num">5 años</div><div className="label">Garantía</div></div>
+            {t.hero.stats.map(s => (
+              <div key={s.label} className="ed-hero-stat">
+                <div className="num">{s.num}</div>
+                <div className="label">{s.label}</div>
+              </div>
+            ))}
           </div>
         </div>
 
@@ -121,7 +118,7 @@ export default function Hero() {
 
           <div className="ed-hero-card telemetry">
             <div className="title">
-              <span className="dot" /> Monitoreo en vivo
+              <span className="dot" /> {t.hero.telemetry}
             </div>
             {S.telemetry.map(([k, v, cls], i) => (
               <div className="row" key={i}>
@@ -132,16 +129,16 @@ export default function Hero() {
           </div>
 
           <div className="ed-hero-card badge">
-            <div className="big">5 años</div>
-            <div className="lil">garantía PR</div>
+            <div className="big">{t.hero.badge.big}</div>
+            <div className="lil">{t.hero.badge.lil}</div>
           </div>
         </div>
       </div>
 
       <div className="ed-hero-nav">
-        {SLIDES.map((s, i) => (
+        {SLIDE_DATA.map((s, i) => (
           <button key={i} className={`ed-hero-dot${slide === i ? ' active' : ''}`} onClick={() => { setSlide(i); setPaused(true) }}>
-            <span className="ed-hero-dot-label">{s.kicker}</span>
+            <span className="ed-hero-dot-label">{t.hero.slides[i].kicker}</span>
             <span className="ed-hero-dot-bar"><span /></span>
           </button>
         ))}
