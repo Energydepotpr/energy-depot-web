@@ -47,16 +47,7 @@ export default function Hero() {
     return () => clearInterval(id)
   }, [paused])
 
-  // Carga el video solo cuando el navegador está idle (no bloquea LCP)
-  useEffect(() => {
-    const load = () => setVideoSrc('/hero-bg.mp4')
-    if ('requestIdleCallback' in window) {
-      const id = (window as Window & typeof globalThis).requestIdleCallback(load)
-      return () => (window as Window & typeof globalThis).cancelIdleCallback(id)
-    }
-    const t = setTimeout(load, 1500)
-    return () => clearTimeout(t)
-  }, [])
+  useEffect(() => { setVideoSrc('/hero-bg.mp4') }, [])
 
   return (
     <section
@@ -70,7 +61,7 @@ export default function Hero() {
           ref={videoRef}
           autoPlay muted loop playsInline
           src={videoSrc}
-          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0, opacity: 0.35 }}
+          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0, opacity: 0.65 }}
         />
       )}
       <div className="ed-hero-video-overlay" />
