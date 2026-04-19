@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { useLanguage } from '@/context/LanguageContext'
 
@@ -30,15 +31,14 @@ export default function Header() {
       <header className="ed-header">
         <div className="ed-header-inner">
           <Link href="/" className="ed-logo">
-            <span className="ed-logo-mark">
-              <svg viewBox="0 0 24 24" fill="none" width="18" height="18">
-                <path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z" fill="currentColor" />
-              </svg>
-            </span>
-            <span className="ed-logo-text">
-              ENERGY DEPOT
-              <small>We Are The Difference</small>
-            </span>
+            <Image
+              src="/logo.png"
+              alt="Energy Depot PR"
+              width={180}
+              height={40}
+              style={{ objectFit: 'contain', height: 36, width: 'auto' }}
+              priority
+            />
           </Link>
 
           <nav className="ed-nav">

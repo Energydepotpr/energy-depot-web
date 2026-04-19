@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { useLanguage } from '@/context/LanguageContext'
 
 export default function Footer() {
@@ -14,16 +15,14 @@ export default function Footer() {
       <div className="ed-container">
         <div className="ed-footer-inner">
           <div className="ed-footer-brand">
-            <Link href="/" className="ed-logo" style={{ marginBottom: 20, display: 'inline-flex' }}>
-              <span className="ed-logo-mark">
-                <svg viewBox="0 0 24 24" fill="none" width="18" height="18">
-                  <path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z" fill="currentColor" />
-                </svg>
-              </span>
-              <span className="ed-logo-text">
-                ENERGY DEPOT
-                <small>We Are The Difference</small>
-              </span>
+            <Link href="/" style={{ display: 'inline-flex', marginBottom: 20 }}>
+              <Image
+                src="/logo.png"
+                alt="Energy Depot PR"
+                width={180}
+                height={40}
+                style={{ objectFit: 'contain', height: 36, width: 'auto' }}
+              />
             </Link>
             <p>{f.tagline}</p>
             <div className="social">
