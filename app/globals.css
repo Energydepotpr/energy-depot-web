@@ -163,8 +163,8 @@ img { max-width: 100%; display: block; }
 .ed-hero-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; pointer-events: none; filter: saturate(1.05) contrast(1.05); }
 .ed-hero-video-overlay {
   position: absolute; inset: 0; z-index: 1; pointer-events: none;
-  background: linear-gradient(180deg, rgba(10,14,24,.55) 0%, rgba(10,14,24,.75) 60%, rgba(10,14,24,.92) 100%),
-    linear-gradient(90deg, rgba(10,14,24,.88) 0%, rgba(10,14,24,.4) 55%, rgba(10,14,24,.2) 100%);
+  background: linear-gradient(180deg, rgba(10,14,24,.25) 0%, rgba(10,14,24,.45) 60%, rgba(10,14,24,.82) 100%),
+    linear-gradient(90deg, rgba(10,14,24,.72) 0%, rgba(10,14,24,.2) 55%, rgba(10,14,24,.05) 100%);
 }
 .ed-hero-aurora {
   position: absolute; inset: -40% -20% auto auto; width: 80%; height: 140%; z-index: 2;

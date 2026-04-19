@@ -55,7 +55,7 @@ export default function Hero() {
           ref={videoRef}
           autoPlay muted loop playsInline
           src={videoSrc}
-          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0, opacity: 0.65 }}
+          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0, opacity: 1 }}
         />
       )}
       <div className="ed-hero-video-overlay" />
