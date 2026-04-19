@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 
@@ -37,7 +37,6 @@ const SLIDES = [
 export default function Hero() {
   const [slide, setSlide] = useState(0)
   const [paused, setPaused] = useState(false)
-  const [videoSrc, setVideoSrc] = useState('')
   const S = SLIDES[slide]
 
   useEffect(() => {
@@ -46,12 +45,6 @@ export default function Hero() {
     return () => clearInterval(id)
   }, [paused])
 
-  // Carga el video solo después del primer paint (no bloquea LCP)
-  useEffect(() => {
-    const t = setTimeout(() => setVideoSrc('/hero-bg.mp4'), 1500)
-    return () => clearTimeout(t)
-  }, [])
-
   return (
     <section
       className="ed-hero"
@@ -59,11 +52,7 @@ export default function Hero() {
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      {videoSrc && (
-        <video className="ed-hero-video" autoPlay muted loop playsInline>
-          <source src={videoSrc} type="video/mp4" />
-        </video>
-      )}
+      {/* CSS-only background — sin video, sin assets extra */}
       <div className="ed-hero-video-overlay" />
       <div className="ed-hero-grid" />
       <div className="ed-hero-aurora" key={`aurora-${slide}`} />
@@ -71,7 +60,7 @@ export default function Hero() {
       <div className="ed-hero-inner">
         <div className="ed-hero-copy" key={`copy-${slide}`}>
           <div className="ed-hero-kicker">
-            <span className="tag" style={{ background: S.accent }}>{S.kicker.split(' ')[0] === 'Estaciones' ? 'PR' : 'PR'}</span>
+            <span className="tag" style={{ background: S.accent }}>PR</span>
             {S.kicker} · Puerto Rico
           </div>
           <h1>
@@ -100,7 +89,15 @@ export default function Hero() {
         <div className="ed-hero-visual" key={`visual-${slide}`}>
           <div className="ed-hero-card main">
             <div className="img">
-              <Image src={S.img} alt={S.product.title} width={400} height={400} sizes="(max-width:960px) 80vw, 40vw" style={{ objectFit: 'contain' }} priority />
+              <Image
+                src={S.img}
+                alt={S.product.title}
+                width={400}
+                height={400}
+                sizes="(max-width:960px) 70vw, 35vw"
+                style={{ objectFit: 'contain' }}
+                priority
+              />
             </div>
             <div className="bottom">
               <div>
@@ -118,9 +115,7 @@ export default function Hero() {
             {S.telemetry.map(([k, v, cls], i) => (
               <div className="row" key={i}>
                 <span className="k">{k}</span>
-                <span className="v">
-                  {cls ? <span className={cls}>{v}</span> : v}
-                </span>
+                <span className="v">{cls ? <span className={cls}>{v}</span> : v}</span>
               </div>
             ))}
           </div>
