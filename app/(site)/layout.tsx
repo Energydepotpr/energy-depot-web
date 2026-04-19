@@ -1,5 +1,6 @@
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
+import MobileNav from '@/components/layout/MobileNav'
 import { LanguageProvider } from '@/context/LanguageContext'
 
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
@@ -9,6 +10,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
         <Header />
         <main style={{ flex: 1 }}>{children}</main>
         <Footer />
+        <MobileNav />
       </div>
     </LanguageProvider>
   )
