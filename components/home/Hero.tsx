@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 
@@ -37,6 +37,7 @@ const SLIDES = [
 export default function Hero() {
   const [slide, setSlide] = useState(0)
   const [paused, setPaused] = useState(false)
+  const [videoSrc, setVideoSrc] = useState('')
   const S = SLIDES[slide]
 
   useEffect(() => {
@@ -45,6 +46,12 @@ export default function Hero() {
     return () => clearInterval(id)
   }, [paused])
 
+  // Carga el video solo después del primer paint (no bloquea LCP)
+  useEffect(() => {
+    const t = setTimeout(() => setVideoSrc('/hero-bg.mp4'), 1500)
+    return () => clearTimeout(t)
+  }, [])
+
   return (
     <section
       className="ed-hero"
@@ -52,9 +59,11 @@ export default function Hero() {
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      <video className="ed-hero-video" autoPlay muted loop playsInline>
-        <source src="/hero-bg.mp4" type="video/mp4" />
-      </video>
+      {videoSrc && (
+        <video className="ed-hero-video" autoPlay muted loop playsInline>
+          <source src={videoSrc} type="video/mp4" />
+        </video>
+      )}
       <div className="ed-hero-video-overlay" />
       <div className="ed-hero-grid" />
       <div className="ed-hero-aurora" key={`aurora-${slide}`} />
@@ -91,7 +100,7 @@ export default function Hero() {
         <div className="ed-hero-visual" key={`visual-${slide}`}>
           <div className="ed-hero-card main">
             <div className="img">
-              <Image src={S.img} alt={S.product.title} width={400} height={400} style={{ objectFit: 'contain' }} priority={slide === 0} />
+              <Image src={S.img} alt={S.product.title} width={400} height={400} sizes="(max-width:960px) 80vw, 40vw" style={{ objectFit: 'contain' }} priority />
             </div>
             <div className="bottom">
               <div>

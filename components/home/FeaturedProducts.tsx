@@ -27,7 +27,7 @@ export default function FeaturedProducts() {
           {featured.map(p => p && (
             <Link key={p.slug} href={`/shop/${p.slug}`} className="ed-product">
               <div className="ed-product-media">
-                <Image src={p.img} alt={p.name} width={400} height={400} style={{ objectFit: 'contain', padding: '16px' }} />
+                <Image src={p.img} alt={p.name} width={400} height={400} sizes="(max-width:640px) 45vw, (max-width:960px) 22vw, 18vw" style={{ objectFit: 'contain', padding: '16px' }} loading="lazy" />
                 {p.badge && (
                   <span className={`ed-product-badge${p.badge === 'Sale' || p.badge === 'Oferta' ? ' sale' : p.badge === 'New' ? ' new' : ''}`}>
                     {p.badge}
